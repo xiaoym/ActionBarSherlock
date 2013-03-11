@@ -150,7 +150,7 @@ public class SearchView extends LinearLayout implements CollapsibleActionView {
     private Runnable mShowImeRunnable = new Runnable() {
         public void run() {
             InputMethodManager imm = (InputMethodManager)
-                    wrapContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 
             if (imm != null) {
                 showSoftInputUnchecked(SearchView.this, imm, 0);
@@ -259,8 +259,7 @@ public class SearchView extends LinearLayout implements CollapsibleActionView {
             throw new IllegalStateException("SearchView is API 8+ only.");
         }
 
-        Context ctx = new android.view.ContextThemeWrapper(context, R.style.Theme_Sherlock);
-        LayoutInflater inflater = (LayoutInflater) ctx
+        LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.abs__search_view, this, true);
 
@@ -570,7 +569,7 @@ public class SearchView extends LinearLayout implements CollapsibleActionView {
             CharSequence hint = null;
             int hintId = mSearchable.getHintId();
             if (hintId != 0) {
-                hint = wrapContext().getString(hintId);
+                hint = getContext().getString(hintId);
             }
             return hint;
         }
@@ -764,7 +763,7 @@ public class SearchView extends LinearLayout implements CollapsibleActionView {
     }
 
     private int getPreferredWidth() {
-        return wrapContext().getResources()
+        return getContext().getResources()
                 .getDimensionPixelSize(R.dimen.abs__search_view_preferred_width);
     }
 
@@ -793,7 +792,7 @@ public class SearchView extends LinearLayout implements CollapsibleActionView {
                 testIntent = mVoiceAppSearchIntent;
             }
             if (testIntent != null) {
-                ResolveInfo ri = wrapContext().getPackageManager().resolveActivity(testIntent,
+                ResolveInfo ri = getContext().getPackageManager().resolveActivity(testIntent,
                         PackageManager.MATCH_DEFAULT_ONLY);
                 return ri != null;
             }
@@ -857,7 +856,7 @@ public class SearchView extends LinearLayout implements CollapsibleActionView {
         } else {
             removeCallbacks(mShowImeRunnable);
             InputMethodManager imm = (InputMethodManager)
-                    wrapContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 
             if (imm != null) {
                 imm.hideSoftInputFromWindow(getWindowToken(), 0);
@@ -1063,13 +1062,9 @@ public class SearchView extends LinearLayout implements CollapsibleActionView {
 
     private int getSearchIconId() {
         TypedValue outValue = new TypedValue();
-        wrapContext().getTheme().resolveAttribute(R.attr.searchViewSearchIcon,
+        getContext().getTheme().resolveAttribute(R.attr.searchViewSearchIcon,
                 outValue, true);
         return outValue.resourceId;
-    }
-    
-    public Context wrapContext() {
-        return new android.view.ContextThemeWrapper(getContext(), R.style.Theme_Sherlock);
     }
 
     private CharSequence getDecoratedHint(CharSequence hintText) {
@@ -1078,7 +1073,7 @@ public class SearchView extends LinearLayout implements CollapsibleActionView {
 
         SpannableStringBuilder ssb = new SpannableStringBuilder("   "); // for the icon
         ssb.append(hintText);
-        Drawable searchIcon = wrapContext().getResources().getDrawable(getSearchIconId());
+        Drawable searchIcon = getContext().getResources().getDrawable(getSearchIconId());
         int textSize = (int) (mQueryTextView.getTextSize() * 1.25);
         searchIcon.setBounds(0, 0, textSize, textSize);
         ssb.setSpan(new ImageSpan(searchIcon), 1, 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -1092,7 +1087,7 @@ public class SearchView extends LinearLayout implements CollapsibleActionView {
             CharSequence hint = null;
             int hintId = mSearchable.getHintId();
             if (hintId != 0) {
-                hint = wrapContext().getString(hintId);
+                hint = getContext().getString(hintId);
             }
             if (hint != null) {
                 mQueryTextView.setHint(getDecoratedHint(hint));
@@ -1134,7 +1129,7 @@ public class SearchView extends LinearLayout implements CollapsibleActionView {
         // attach the suggestions adapter, if suggestions are available
         // The existence of a suggestions authority is the proxy for "suggestions available here"
         if (mSearchable.getSuggestAuthority() != null) {
-            mSuggestionsAdapter = new SuggestionsAdapter(wrapContext(),
+            mSuggestionsAdapter = new SuggestionsAdapter(getContext(),
                     this, mSearchable, mOutsideDrawablesCache);
             mQueryTextView.setAdapter(mSuggestionsAdapter);
             ((SuggestionsAdapter) mSuggestionsAdapter).setQueryRefinement(
@@ -1240,11 +1235,11 @@ public class SearchView extends LinearLayout implements CollapsibleActionView {
             if (searchable.getVoiceSearchLaunchWebSearch()) {
                 Intent webSearchIntent = createVoiceWebSearchIntent(mVoiceWebSearchIntent,
                         searchable);
-                wrapContext().startActivity(webSearchIntent);
+                getContext().startActivity(webSearchIntent);
             } else if (searchable.getVoiceSearchLaunchRecognizer()) {
                 Intent appSearchIntent = createVoiceAppSearchIntent(mVoiceAppSearchIntent,
                         searchable);
-                wrapContext().startActivity(appSearchIntent);
+                getContext().startActivity(appSearchIntent);
             }
         } catch (ActivityNotFoundException e) {
             // Should not happen, since we check the availability of
@@ -1309,7 +1304,7 @@ public class SearchView extends LinearLayout implements CollapsibleActionView {
 
     private void adjustDropDownSizeAndPosition() {
         if (mDropDownAnchor.getWidth() > 1) {
-            Resources res = wrapContext().getResources();
+            Resources res = getContext().getResources();
             int anchorPadding = mSearchPlate.getPaddingLeft();
             Rect dropDownPadding = new Rect();
             int iconOffset = mIconifiedByDefault
@@ -1434,7 +1429,7 @@ public class SearchView extends LinearLayout implements CollapsibleActionView {
         try {
             // If the intent was created from a suggestion, it will always have an explicit
             // component here.
-            wrapContext().startActivity(intent);
+            getContext().startActivity(intent);
         } catch (RuntimeException ex) {
             Log.e(LOG_TAG, "Failed launch activity: " + intent, ex);
         }
@@ -1452,7 +1447,7 @@ public class SearchView extends LinearLayout implements CollapsibleActionView {
     private void launchQuerySearch(int actionKey, String actionMsg, String query) {
         String action = Intent.ACTION_SEARCH;
         Intent intent = createIntent(action, null, null, query, actionKey, actionMsg);
-        wrapContext().startActivity(intent);
+        getContext().startActivity(intent);
     }
 
     /**
@@ -1523,7 +1518,7 @@ public class SearchView extends LinearLayout implements CollapsibleActionView {
         // because it becomes immutable once it enters the PendingIntent
         Intent queryIntent = new Intent(Intent.ACTION_SEARCH);
         queryIntent.setComponent(searchActivity);
-        PendingIntent pending = PendingIntent.getActivity(wrapContext(), 0, queryIntent,
+        PendingIntent pending = PendingIntent.getActivity(getContext(), 0, queryIntent,
                 PendingIntent.FLAG_ONE_SHOT);
 
         // Now set up the bundle that will be inserted into the pending intent
