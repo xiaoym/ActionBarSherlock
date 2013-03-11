@@ -258,7 +258,7 @@ public class SearchView extends LinearLayout implements CollapsibleActionView {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.FROYO) {
             throw new IllegalStateException("SearchView is API 8+ only.");
         }
-
+        
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.abs__search_view, this, true);
