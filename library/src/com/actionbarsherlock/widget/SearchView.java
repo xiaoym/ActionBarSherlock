@@ -259,7 +259,7 @@ public class SearchView extends LinearLayout implements CollapsibleActionView {
             throw new IllegalStateException("SearchView is API 8+ only.");
         }
 
-        Context ctx = new android.view.ContextThemeWrapper(context, R.style.Theme_Sherlock);
+        Context ctx = new android.view.ContextThemeWrapper(context, R.style.Theme_Sherlock_Light);
         LayoutInflater inflater = (LayoutInflater) ctx
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.abs__search_view, this, true);
@@ -1069,7 +1069,7 @@ public class SearchView extends LinearLayout implements CollapsibleActionView {
     }
     
     public Context wrapContext() {
-        return new android.view.ContextThemeWrapper(getContext(), R.style.Theme_Sherlock);
+        return new android.view.ContextThemeWrapper(getContext(), R.style.Theme_Sherlock_Light);
     }
 
     private CharSequence getDecoratedHint(CharSequence hintText) {
