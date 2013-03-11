@@ -1068,10 +1068,6 @@ public class SearchView extends LinearLayout implements CollapsibleActionView {
         return outValue.resourceId;
     }
     
-    public Context wrapContext() {
-        return new android.view.ContextThemeWrapper(getContext(), R.style.Theme_Sherlock);
-    }
-
     private CharSequence getDecoratedHint(CharSequence hintText) {
         // If the field is always expanded, then don't add the search icon to the hint
         if (!mIconifiedByDefault) return hintText;
